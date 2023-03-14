@@ -1,4 +1,5 @@
 import matplotlib.pyplot as plt
+import scienceplots
 from matplotlib.backends.backend_pdf import PdfPages
 import statistics
 import os, torch
