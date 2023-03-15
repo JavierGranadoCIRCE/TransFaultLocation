@@ -4,6 +4,7 @@ from matplotlib.backends.backend_pdf import PdfPages
 import statistics
 import os, torch
 import numpy as np
+from tqdm import tqdm
 
 plt.style.use(['science', 'ieee'])
 plt.rcParams["text.usetex"] = False
@@ -20,7 +21,8 @@ def plotter(name, y_true, y_pred, ascore, labels):
 	if 'TranAD' in name: y_true = torch.roll(y_true, 1, 0)
 	os.makedirs(os.path.join('plots', name), exist_ok=True)
 	pdf = PdfPages(f'plots/{name}/output.pdf')
-	for dim in range(y_true.shape[1]):
+	for dim in tqdm(range(y_true.shape[1])):
+	#for dim in range(y_true.shape[1]):
 		y_t, y_p, l, a_s = y_true[:, dim], y_pred[:, dim], labels[:, dim], ascore[:, dim]
 		fig, (ax1, ax2) = plt.subplots(2, 1, sharex=True)
 		ax1.set_ylabel('Value')

@@ -34,6 +34,7 @@ def load_dataset(dataset):
 		if dataset == 'MSL': file = 'C-1_' + file
 		if dataset == 'UCR': file = '136_' + file
 		if dataset == 'NAB': file = 'ec2_request_latency_system_failure_' + file
+		if dataset == 'CIRCE': file = 'CIRCE_' + file
 		loader.append(np.load(os.path.join(folder, f'{file}.npy')))
 	# loader = [i[:, debug:debug+1] for i in loader]
 	if args.less: loader[0] = cut_array(0.2, loader[0])
@@ -307,7 +308,7 @@ if __name__ == '__main__':
 	### Training phase
 	if not args.test:
 		print(f'{color.HEADER}Training {args.model} on {args.dataset}{color.ENDC}')
-		num_epochs = 5; e = epoch + 1; start = time()
+		num_epochs = 50; e = epoch + 1; start = time()
 		for e in tqdm(list(range(epoch+1, epoch+num_epochs+1))):
 			lossT, lr = backprop(e, model, trainD, trainO, optimizer, scheduler)
 			accuracy_list.append((lossT, lr))
@@ -332,6 +333,7 @@ if __name__ == '__main__':
 	for i in range(loss.shape[1]):
 		lt, l, ls = lossT[:, i], loss[:, i], labels[:, i]
 		result, pred = pot_eval(lt, l, ls); preds.append(pred)
+		#df = pd.concat([df, result])
 		df = df.append(result, ignore_index=True)
 	# preds = np.concatenate([i.reshape(-1, 1) + 0 for i in preds], axis=1)
 	# pd.DataFrame(preds, columns=[str(i) for i in range(10)]).to_csv('labels.csv')
@@ -344,3 +346,5 @@ if __name__ == '__main__':
 	pprint(result)
 	# pprint(getresults2(df, result))
 	# beep(4)
+
+#%%
