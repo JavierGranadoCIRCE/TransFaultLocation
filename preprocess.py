@@ -157,34 +157,41 @@ def load_data(dataset):
 				labels[indices[i]:indices[i+1], :] = 1
 			np.save(f'{folder}/{fn}_labels.npy', labels)
 	elif dataset == 'CIRCE':
-		dataset_folder = 'data/CIRCE/CSV'
-		file = os.path.join(dataset_folder, 'PF_P_Error1.csv')
-		df = pd.read_csv(file)
-		R_prefalta=df['Prefault R (V)']
-		S_prefalta=df['Prefault S (V)']
-		T_prefalta=df['Prefault T (V)']
+		dataset_folder = 'data/CIRCE/Sin fundamental'
+		prefalta = np.load(os.path.join(dataset_folder, f'DB_CT802_PulsoPrefalta_4000.npz'))
+		register = prefalta['tipos']
+		# SIN FILTRAR LA FUNDAMENTAL
+		#dataset_folder = 'data/CIRCE/CSV'
+		#file = os.path.join(dataset_folder, 'PF_P_Error2.csv')
+		#df = pd.read_csv(file)
+		#R_prefalta=df['Prefault R (V)']
+		#S_prefalta=df['Prefault S (V)']
+		#T_prefalta=df['Prefault T (V)']
 
-		register = np.concatenate((R_prefalta[1030:6030], S_prefalta[51030:56030], T_prefalta[101030:106030]))
-		R = register[:5000]
-		S = register[5000:10000]
-		T = register[10000:]
+		#register = np.concatenate((R_prefalta[1030:6030], S_prefalta[51030:56030], T_prefalta[101030:106030]))
+		R = register[:4000]
+		S = register[4000:8000]
+		T = register[8000:]
 
 		register = np.vstack((R, S, T))
 		train = np.transpose(register)
 		train, min_a, max_a = normalize3(train)
-		R_falta=df['Fault R (V)']
-		S_falta=df['Fault S (V)']
-		T_falta=df['Fault T (V)']
-		register = np.vstack((R_falta[52030:57030], S_falta[102030:107030], T_falta[152030:157030]))
-		R = register[:5000]
-		S = register[5000:10000]
-		T = register[10000:]
+
+		prefalta = np.load(os.path.join(dataset_folder, f'DB_CT802_PulsoFalta_4000.npz'))
+		register = prefalta['tipos'][1,:]
+		#R_falta=df['Fault R (V)']
+		#S_falta=df['Fault S (V)']
+		#T_falta=df['Fault T (V)']
+		#register = np.vstack((R_falta[52030:57030], S_falta[102030:107030], T_falta[152030:157030]))
+		R = register[:4000]
+		S = register[4000:8000]
+		T = register[8000:]
 
 		register = np.vstack((R, S, T))
 		test = np.transpose(register)
 		test, _, _ = normalize3(test, min_a, max_a)
 
-		labels = np.zeros((5000,3))
+		labels = np.zeros((4000,3))
 		np.save(f'{folder}/CIRCE_train.npy', train)
 		np.save(f'{folder}/CIRCE_test.npy', test)
 		np.save(f'{folder}/CIRCE_labels.npy', labels)
