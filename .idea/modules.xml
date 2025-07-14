@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/TranAD.iml" filepath="$PROJECT_DIR$/.idea/TranAD.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/TransFaultLocation.iml" filepath="$PROJECT_DIR$/.idea/TransFaultLocation.iml" />
     </modules>
   </component>
 </project>

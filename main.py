@@ -14,7 +14,7 @@ import torch.nn as nn
 from time import time
 from pprint import pprint
 # from beepy import beep
-
+#prueba commit versión
 def convert_to_windows(data, model):
 	windows = []; w_size = model.n_window
 	for i, g in enumerate(data): 
