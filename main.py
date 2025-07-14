@@ -346,5 +346,5 @@ if __name__ == '__main__':
 	pprint(result)
 	# pprint(getresults2(df, result))
 	# beep(4)
-
+	#commit prueba versión
 #%%
